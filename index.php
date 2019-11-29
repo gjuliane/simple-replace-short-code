@@ -4,6 +4,7 @@
  *  Complete regexps
  *  \[vc_empty_space*[\]]       // empty space replace with <br>
  *  <h2.*\/h2>                  // all h2
+ *  [[]vc_column_text[]]([\s])*?(<h2){1,}.*\/h2>([\s])*?[[]\/vc_column_text[]]  //only h3 between vc_column_text
  *  \[embed*[\]]                // start embed
  *  \[\/embed*[\]]              // end embed
  *  \[embed.*\](.*)\[\/embed\]  // complete embed
@@ -15,7 +16,10 @@ $node = do_get_content();
 
 // replacing empty spaces
 $node = preg_replace("/\[vc_empty_space*[\]]/m", "<br>", $node);
-$node = preg_replace("/<h2.*\/h2>/m", "<br>", $node);
+
+// replacing h2 between vc_column_text
+#$node = preg_replace("/<h2.*\/h2>/m", "<br>", $node);
+$node = preg_replace("/[[]vc_column_text[]]([\s])*?(<h2){1,}.*\/h2>([\s])*?[[]\/vc_column_text[]]/m", "<br>", $node);
 
 // serching and replacing youtube embeds
 $node = preg_replace_callback("/\[embed.*\](.*)\[\/embed\]/m", 'do_replace_yt_embed', $node);
